@@ -13,7 +13,7 @@ app.use(express.json());
 
 
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.swu9d.mongodb.net/?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_SECRET_KEY}@cluster0.fp5eepf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -42,7 +42,7 @@ async function run() {
       res.send({ token });
     })
 
-    // middlewares 
+    // middlewares
     const verifyToken = (req, res, next) => {
       // console.log('inside verify token', req.headers.authorization);
       if (!req.headers.authorization) {
@@ -94,7 +94,7 @@ async function run() {
 
     app.post('/users', async (req, res) => {
       const user = req.body;
-      // insert email if user doesnt exists: 
+      // insert email if user doesnt exists:
       // you can do this many ways (1. email unique, 2. upsert 3. simple checking)
       const query = { email: user.email }
       const existingUser = await userCollection.findOne(query);
@@ -301,7 +301,7 @@ async function run() {
           $group: {
             _id: '$menuItems.category',
             quantity:{ $sum: 1 },
-            revenue: { $sum: '$menuItems.price'} 
+            revenue: { $sum: '$menuItems.price'}
           }
         },
         {
@@ -347,5 +347,5 @@ app.listen(port, () => {
  * app.put('/users/:id')
  * app.patch('/users/:id')
  * app.delete('/users/:id')
- * 
+ *
 */
